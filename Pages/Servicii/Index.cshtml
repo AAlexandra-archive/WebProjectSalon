@@ -1,0 +1,82 @@
+﻿@page "/"
+@model SalonBellissima.Pages.Servicii.IndexModel
+
+@{
+    ViewData["Title"] = "Servicii";
+}
+
+<h1>Servicii oferite</h1>
+
+<p>
+    <a asp-page="Create">Adaugă un serviciu</a>
+</p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Caută un serviciu după denumire:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Caută" class="btn btn-primary" /> |
+            <a asp-page="./Index">Înapoi</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.TitleSort">
+                @Html.DisplayNameFor(model => model.Serviciu[0].Denumire)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Serviciu[0].Categorie.DenumireCategorie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Serviciu[0].Pret)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Serviciu[0].Durata)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Serviciu[0].AngajatiAsociati)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ServiciuD.Servicii) {
+        string selectedRow = "";
+        if (item.ID == Model.ServiciuID)
+            {
+                selectedRow = "table-success";
+            }
+        <tr class="@selectedRow">
+            <td>
+                @Html.DisplayFor(modelItem => item.Denumire)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categorie.DenumireCategorie)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pret)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Durata) <span>(de) minute</span>
+            </td>
+                <td>
+                    @{
+                        foreach (var angajat in item.AngajatiAsociati)
+                        {
+                             @: @angajat.Angajat.NumeAngajat <br />
+                        }
+                    }
+                </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
